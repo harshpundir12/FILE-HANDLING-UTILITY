@@ -1,0 +1,93 @@
+import java.io.*;
+import java.util.Scanner;
+
+/**
+ * FileHandlerDemo.java
+ *
+ * Demonstrates reading, writing, and modifying text files using Java.
+ *
+ * DELIVERABLE: A script demonstrating file operations with clear documentation.
+ * Author: CODTECH Intern
+ */
+class FileHandlerDemo {
+    private static final String FILE_NAME = "sample.txt";
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n===== FILE HANDLING UTILITY =====");
+            System.out.println("1. Write to File");
+            System.out.println("2. Read from File");
+            System.out.println("3. Modify File");
+            System.out.println("4. Exit");
+            System.out.print("Enter your choice: ");
+            choice = scanner.nextInt();
+            scanner.nextLine(); // Clear newline character
+
+            switch (choice) {
+                case 1:
+                    writeFile(scanner);
+                    break;
+                case 2:
+                    readFile();
+                    break;
+                case 3:
+                    modifyFile(scanner);
+                    break;
+                case 4:
+                    System.out.println("Exiting program.");
+                    break;
+                default:
+                    System.out.println("Invalid choice. Try again.");
+            }
+        } while (choice != 4);
+
+        scanner.close();
+    }
+
+    /**
+     * Writes user input to a file.
+     */
+    private static void writeFile(Scanner scanner) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME))) {
+            System.out.println("Enter content to write to the file:");
+            String content = scanner.nextLine();
+            writer.write(content);
+            System.out.println("Content written to " + FILE_NAME);
+        } catch (IOException e) {
+            System.out.println("An error occurred while writing to the file.");
+        }
+    }
+
+    /**
+     * Reads and prints content from the file.
+     */
+    private static void readFile() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line;
+            System.out.println("\nContents of " + FILE_NAME + ":");
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (IOException e) {
+            System.out.println("An error occurred while reading the file.");
+        }
+    }
+
+    /**
+     * Modifies the file by appending new text.
+     */
+    private static void modifyFile(Scanner scanner) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
+            System.out.println("Enter content to append to the file:");
+            String newContent = scanner.nextLine();
+            writer.newLine(); // Add a new line before appending
+            writer.write(newContent);
+            System.out.println("Content appended to " + FILE_NAME);
+        } catch (IOException e) {
+            System.out.println("An error occurred while modifying the file.");
+        }
+    }
+}
